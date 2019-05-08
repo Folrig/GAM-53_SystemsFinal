@@ -12,7 +12,7 @@ public class BattleCreature
     private int _maxHealth;
     private int _power;
     private int _agility;
-    private bool _fainted;
+    private bool _isFainted;
     private int _level;
     private int _xp;
     private GameObject _avatar;
@@ -21,6 +21,10 @@ public class BattleCreature
 
     #region Properties
     public string Name { get { return this._name; } set { _name = value; } }
+    public bool IsFainted { get { return this._isFainted; } }
+    public int CurrentXP { get { return this._xp; } }
+    public int Health { get { return this._health; } }
+    public int MaxHealth { get { return this._maxHealth; } }
     #endregion
 
     #region Methods
