@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,14 +29,67 @@ public class BattleCreature
     #endregion
 
     #region Methods
-    void Start()
+    public AttackResult ReceiveAttack(int damage, BattleMove move)
     {
-		
-	}
-	
-	void Update()
+        // Discuss how to determine the result, this might possibly be moved to the Battle class and the creature would take the result
+        AttackResult attack = new AttackResult();
+
+        return attack;
+    }
+
+    public void AdjustHealth(int delta)
     {
-		
-	}
+        this._health += delta;
+
+        if (_health > _maxHealth)
+        {
+            _health = _maxHealth;
+        }
+        if (_health <= 0)
+        {
+            _health = 0;
+            _isFainted = true;
+        }
+    }
+
+    public void Revive()
+    {
+        this._isFainted = false;
+    }
+
+    public void GainXP(int delta)
+    {
+        if (delta < 0)
+        {
+            Debug.LogError("XP cannot be negative.");
+        }
+        else
+        {
+            this._xp += delta;
+        }
+    }
+
+    public int NextLevelXP()
+    {
+        // Calculations for next level
+        int xp = 0;
+        return xp;
+    }
+
+    private void LevelUp()
+    {
+        this._level++;
+        
+        if (this._level < 1)
+        {
+            Debug.LogError("BattleCreature.LevelUp() - Level cannot be less than 1");
+            throw new NotSupportedException();
+        }
+    }
+
+    public void CureCondition()
+    {
+
+    }
     #endregion
 }
