@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using NUnit.Framework;
 
-
+[TestFixture]
 public class Saving 
 {
     public string creatureName;

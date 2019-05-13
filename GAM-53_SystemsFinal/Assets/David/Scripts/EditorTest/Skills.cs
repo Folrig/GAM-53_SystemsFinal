@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using NUnit.Framework;
 
+
+[TestFixture]
 public class Skills 
 {
     public int[] skill;

@@ -5,7 +5,7 @@ using System;
 using NUnit;
 using NUnit.Framework;
 
-
+[TestFixture]
 public class PokemawnDex 
 {
     
@@ -17,12 +17,32 @@ public class PokemawnDex
         Assert.That(true); 
 
     }
+
     [Test]
     public void Saving()
     {
         Assert.That(true);
     }
 
-		
+    [Test]
+    public void Load(LoadingData loading)
+    {
+        if (loadData != null)
+        {
+            Assert.That(true);
+        }
+        Assert.That(true);
+    }
+
+    [Test]
+    public void TestingPokeValues ()
+    {
+        
+        CreateCreature creatureStats = new CreateCreature();
+
+
+        Assert.That(true);
+
+    }
 	
 }
