@@ -16,6 +16,7 @@ public class BattleCreature
     private bool _isFainted;
     private int _level;
     private int _xp;
+    private Condition _condition;
     private GameObject _avatar;
     public List<BattleMove> moves = new List<BattleMove>();
     #endregion
@@ -29,6 +30,26 @@ public class BattleCreature
     #endregion
 
     #region Methods
+    public BattleCreature() { }
+
+    public BattleCreature(string name, Attribute attribute, int maxHealth, int health, int power, int agility)
+    {
+        this._name = name;
+        this._attribute = attribute;
+        this._maxHealth = maxHealth;
+        if (health > this._maxHealth)
+        {
+            _health = _maxHealth;
+        }
+        else
+        {
+            this._health = health;
+        }
+        this._power = power;
+        this._agility = agility;
+        this._condition = Condition.Normal;
+    }
+
     public AttackResult ReceiveAttack(int damage, BattleMove move)
     {
         // Discuss how to determine the result, this might possibly be moved to the Battle class and the creature would take the result
@@ -87,9 +108,19 @@ public class BattleCreature
         }
     }
 
+    public void InfliectCondition(Condition condition)
+    {
+        this._condition = condition;
+    }
+
     public void CureCondition()
     {
+        this._condition = Condition.Normal;
+    }
 
+    public void SetAvatar(GameObject newAvatar)
+    {
+        this._avatar = newAvatar;
     }
     #endregion
 }
