@@ -1,0 +1,10 @@
+{
+    "name": "SteveScripts",
+    "references": [
+        "JamesScripts"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
