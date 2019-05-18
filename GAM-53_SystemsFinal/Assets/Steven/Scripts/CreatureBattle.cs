@@ -25,12 +25,13 @@ public class CreatureBattle : MonoBehaviour
 
     private bool playersTurn = false;
 
+
 	private void Start()
 	{
         
 	}
 
-    public void TurnDone(BattleMove attack, int strength)
+    public void SendAttack(BattleMove attack, int strength)
     {
         
     }
