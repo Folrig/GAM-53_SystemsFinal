@@ -3,7 +3,11 @@ guid: 8d9ed96f732c74091ae670b002f4fe53
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - layout: {instanceID: 0}
+  - scrollbar: {instanceID: 0}
+  - messagePrefab: {fileID: 1775222771474122, guid: e249adc3cd73f45b7894c3d458dfc8d6,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
