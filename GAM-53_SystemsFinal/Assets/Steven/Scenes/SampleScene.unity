@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -535,13 +535,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CBUI: {fileID: 301130560}
   messageList: {fileID: 837121742}
+  commandPanel: {fileID: 1683045404}
   playerAvatarPosition: {fileID: 0}
   enemyAvatarPosition: {fileID: 0}
-  playerName: {fileID: 0}
-  playerHealth: {fileID: 0}
-  enemyName: {fileID: 0}
-  playerGauge: {fileID: 0}
-  enemyGauge: {fileID: 0}
+  playerName: {fileID: 596499663}
+  playerHealth: {fileID: 1579451963}
+  enemyName: {fileID: 70258956}
+  playerGauge: {fileID: 1663638434}
+  enemyGauge: {fileID: 337181555}
 --- !u!1 &337181553
 GameObject:
   m_ObjectHideFlags: 0

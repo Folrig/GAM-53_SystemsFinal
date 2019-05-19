@@ -31,12 +31,15 @@
         foreach (BattleMove move in creature.moves)
         {
             if (move.name == command)
+            {
                 chosenMove = move;
+                break;
+            }
         }
         if (chosenMove.name == "")
             return;
-        
-        /*
+
+        /* Need access to BattleCreature power and agility for this to work
          int strength;
 
         if (move.usesPower)

@@ -1,16 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿public class EnemyController : CreatureController
+{
+    public EnemyController(BattleCreature creature, CreatureBattle battleController) : base(creature, battleController) { }
 
-public class EnemyController : MonoBehaviour {
+    public override void GetAttack()
+    {
+        BattleMove chosenMove = creature.moves[UnityEngine.Random.Range(0, creature.moves.Count)];
+        /* Need access to BattleCreature power and agility for this to work
+         int strength;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        if (move.usesPower)
+        {
+            strength = creature.power;
+        }
+        else
+        {
+            strength = creature.agility;
+        }
+
+        battleController.SendAttack(chosenMove, strength);
+        */
+    }
 }
