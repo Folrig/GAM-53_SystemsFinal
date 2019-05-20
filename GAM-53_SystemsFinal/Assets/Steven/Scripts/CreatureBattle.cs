@@ -9,8 +9,6 @@ public class CreatureBattle : MonoBehaviour
 
     private PlayerController playerController;
     private EnemyController enemyController;
-    private GameObject playerAvatar;
-    private GameObject enemyAvatar;
 
     // These should be set from the CBUI prefab
     [SerializeField] private GameObject CBUI;
@@ -22,15 +20,48 @@ public class CreatureBattle : MonoBehaviour
     [SerializeField] private Transform playerAvatarPosition;
     [SerializeField] private Transform enemyAvatarPosition;
 
+    private GameObject playerAvatar;
+    private GameObject enemyAvatar;
+    private Animator playerAnimator;
+    private Animator enemyAnimator;
+
     private bool playersTurn = false;
     [SerializeField] private float messageWaitTime = 3.0f;
 
     private static readonly string[] genNames = { "Spot", "Fluffy", "Spike", "Fido", "Mittens", "Rex", "Princess", "Buddy", "Bear", "Duke" };
 
-	private void Start()
-	{
-        
-	}
+    public void Initialize(BattleCreature playerCreature, Transform playerAvatarPosition, Transform enemyAvatarPosition)
+    {
+        this.playerAvatarPosition = playerAvatarPosition;
+        this.enemyAvatarPosition = enemyAvatarPosition;
+
+        this.playerCreature = playerCreature;
+        // The below line should feed a desired level to the generator, but I'd need the player creature's level to base it off
+        enemyCreature = GenerateEnemy(1);
+
+        // I lack access to the avatars to instantiate them
+        // playerAvatar = Instantiate(playerCreature.Avatar, playerAvatarPosition);
+        // enemyAvatar = Instantiate(enemyCreature.Avatar, enemyAvatarPosition);
+        // playerAnimator = playerAvatar.GetComponent<Animator>();
+        // if (playerAnimator == null)
+        // {
+        //     Debug.LogWarning("[F" + Time.frameCount + "] Player avatar does not have an Animator.");
+        // }
+        // enemyAnimator = enemyAvatar.GetComponent<Animator>();
+        // if (enemyAnimator == null)
+        // {
+        //     Debug.LogWarning("[F" + Time.frameCount + "] Enemy avatar does not have an Animator.");
+        // }
+
+        playerController = new PlayerController(playerCreature, this, commandPanel);
+        enemyController = new EnemyController(enemyCreature, this);
+
+        creaturePanels.UpdatePlayer(playerCreature, true);
+        creaturePanels.UpdateEnemy(enemyCreature, true);
+
+        playersTurn = UnityEngine.Random.value > 0.5f ? true : false;
+        StartCoroutine(BattleIntro());
+    }
 
     private void OnEnable()
     {
@@ -57,19 +88,9 @@ public class CreatureBattle : MonoBehaviour
         }
     }
 
-	public IEnumerator DoAttack(BattleMove attack)
-    {
-        yield return null;
-    }
-
     private void ShowMessage(string message)
     {
         messageList.AddMessage(message);
-    }
-
-    private IEnumerator DoEnemyTurn()
-    {
-        yield return null;
     }
 
     private IEnumerator FinishBattle()
@@ -166,6 +187,17 @@ public class CreatureBattle : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator BattleIntro()
+    {
+        yield return StartCoroutine(MessageWithDelay("A wild " + enemyCreature.Name + " appears!"));
+        if (playersTurn)
+        {
+            yield return StartCoroutine(MessageWithDelay("Command?"));
+        }
+
+        (playersTurn ? (CreatureController)playerController : (CreatureController)enemyController).GetAttack();
     }
 
     private IEnumerator MessageWithDelay(string message)

@@ -14,7 +14,7 @@
         this.battleController = battleController;
     }
 
-    virtual public AttackResult ReceiveAttack(BattleMove attack, int strength)
+    public AttackResult ReceiveAttack(BattleMove attack, int strength)
     {
         // Need access to creature's attribute for below line to work
         //int damage = strength * (1 - 0.25 * CompareAttributes(attack.attribute, creature.attribute));

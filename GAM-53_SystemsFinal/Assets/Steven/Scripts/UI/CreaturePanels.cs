@@ -94,4 +94,13 @@ public class CreaturePanels : MonoBehaviour
             enemyBarMoving = false;
         }
     }
+
+    public void TestInit(Text pCN, Text pCH, Image pCB, Text eCN, Image eCB)
+    {
+        playerCreatureName = pCN;
+        playerCreatureHealth = pCH;
+        playerCreatureBar = pCB;
+        enemyCreatureName = eCN;
+        enemyCreatureBar = eCB;
+    }
 }
