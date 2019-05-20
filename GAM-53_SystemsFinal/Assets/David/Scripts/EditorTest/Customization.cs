@@ -1,4 +1,4 @@
-﻿namespace UnitTesting.EditorTest
+﻿namespace PokeMawnDéx.EditorTest
 {
     public class Customization
     {

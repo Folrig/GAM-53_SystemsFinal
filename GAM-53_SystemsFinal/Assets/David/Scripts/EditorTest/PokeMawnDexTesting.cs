@@ -6,7 +6,7 @@ using NUnit;
 using NUnit.Framework;
 
 
-namespace UnitTesting.EditorTest
+namespace PokeMawnDéx.EditorTest
 {
     [TestFixture]
     public class PokeMawnDexTesting
