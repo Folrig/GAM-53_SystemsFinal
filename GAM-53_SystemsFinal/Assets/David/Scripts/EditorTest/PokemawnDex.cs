@@ -5,26 +5,26 @@ using System;
 using NUnit;
 using NUnit.Framework;
 
-[TestFixture]
+//[TestFixture]
 public class PokemawnDex 
 {
     
     public List<LoadingData> loadData = new List<LoadingData>();
 
-    [Test]
+   // [Test]
     public  void CreateCreature()
     {
         Assert.That(true); 
 
     }
 
-    [Test]
+   // [Test]
     public void Saving()
     {
         Assert.That(true);
     }
 
-    [Test]
+    //[Test]
     public void Load(LoadingData loading)
     {
         if (loadData != null)
@@ -34,7 +34,7 @@ public class PokemawnDex
         Assert.That(true);
     }
 
-    [Test]
+    //[Test]
     public void TestingPokeValues ()
     {
         
