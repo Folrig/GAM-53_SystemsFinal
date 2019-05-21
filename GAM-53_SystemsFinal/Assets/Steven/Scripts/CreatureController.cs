@@ -1,4 +1,6 @@
-﻿abstract public class CreatureController
+﻿using UnityEngine;
+
+abstract public class CreatureController
 {
     public readonly BattleCreature creature;
     protected CreatureBattle battleController;
@@ -14,13 +16,38 @@
         this.battleController = battleController;
     }
 
-    public AttackResult ReceiveAttack(BattleMove attack, int strength)
+    public AttackResult ReceiveAttack(BattleMove attack, int strength, int agility)
     {
-        // Need access to creature's attribute for below line to work
-        //int damage = strength * (1 - 0.25 * CompareAttributes(attack.attribute, creature.attribute));
-        int damage = strength;
+        AttackResult result = new AttackResult() { isDodged = false, isStrong = false, isWeak = false };
 
-        return creature.ReceiveAttack(damage, attack);
+        float dodgeChance = Mathf.Round(50f * agility / creature.Agility) / 1000f;
+        result.isDodged = Random.value < dodgeChance;
+
+        if (result.isDodged)
+        {
+            result.damageTaken = 0;
+            return result;
+        }
+        
+        int vulnerability = CompareAttributes(attack.attribute, creature.Attrib);
+        if (vulnerability == 1)
+        {
+            result.isStrong = true;
+        }
+        else if (vulnerability == -1)
+        {
+            result.isWeak = true;
+        }
+
+        int damage = Mathf.RoundToInt(Random.Range(0.75f, 1.0f) * (float)strength * (1.0f - 0.5f * (float)vulnerability));
+        if (damage > creature.Health)
+        {
+            damage = creature.Health;
+        }
+        result.damageTaken = damage;
+        creature.ReceiveDamage(damage);
+
+        return result;
     }
 
     abstract public void GetAttack();

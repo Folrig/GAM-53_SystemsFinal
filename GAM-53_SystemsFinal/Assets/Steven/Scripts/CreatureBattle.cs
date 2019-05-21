@@ -78,13 +78,13 @@ public class CreatureBattle : MonoBehaviour
     {
         if (playersTurn)
         {
-            AttackResult enemyResult = enemyController.ReceiveAttack(attack, strength);
+            AttackResult enemyResult = enemyController.ReceiveAttack(attack, strength, playerCreature.Agility);
             commandPanel.TogglePanel(false);
             StartCoroutine(ShowAttackResult(enemyCreature, playerCreature, enemyResult));
         }
         else
         {
-            AttackResult playerResult = playerController.ReceiveAttack(attack, strength);
+            AttackResult playerResult = playerController.ReceiveAttack(attack, strength, enemyCreature.Agility);
             StartCoroutine(ShowAttackResult(playerCreature, enemyCreature, playerResult));
         }
     }

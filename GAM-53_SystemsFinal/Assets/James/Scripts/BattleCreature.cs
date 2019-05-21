@@ -31,6 +31,7 @@ public class BattleCreature
     public int Agility { get { return this._agility; } }
     public int Level { get { return this._level; } }
     public GameObject Avatar { get { return this._avatar; } }
+    public Attribute Attrib { get { return this._attribute; } }
     #endregion
 
     #region Methods
