@@ -28,7 +28,8 @@ public class CreatureBattle : MonoBehaviour
     private bool playersTurn = false;
     [SerializeField] private float messageWaitTime = 3.0f;
 
-    private static readonly string[] genNames = { "Spot", "Fluffy", "Spike", "Fido", "Mittens", "Rex", "Princess", "Buddy", "Bear", "Duke" };
+    private static readonly string[] genCreatureNames = { "Spot", "Fluffy", "Spike", "Fido", "Mittens", "Rex", "Princess", "Buddy", "Bear", "Duke" };
+    private static readonly string[] genMoveNames = { "Crusher", "Whiplash", "Inferno", "Bladespin", "Deluge" };
 
     public void Initialize(BattleCreature playerCreature, Transform playerAvatarPosition, Transform enemyAvatarPosition)
     {
@@ -59,7 +60,7 @@ public class CreatureBattle : MonoBehaviour
         creaturePanels.UpdatePlayer(playerCreature, true);
         creaturePanels.UpdateEnemy(enemyCreature, true);
 
-        playersTurn = UnityEngine.Random.value > 0.5f ? true : false;
+        playersTurn = RandomBool();
         StartCoroutine(BattleIntro());
     }
 
@@ -117,9 +118,8 @@ public class CreatureBattle : MonoBehaviour
 
     private BattleCreature GenerateEnemy(int desiredLevel)
     {
-        string name = genNames[UnityEngine.Random.Range(0, genNames.Length)];
-        Array attribValues = Enum.GetValues(typeof(Attribute));
-        Attribute attrib = (Attribute)attribValues.GetValue(UnityEngine.Random.Range(0, attribValues.Length));
+        string name = genCreatureNames[UnityEngine.Random.Range(0, genCreatureNames.Length)];
+        Attribute attrib = RandomAttribute();
         int health = UnityEngine.Random.Range(80, 121);
         int power = UnityEngine.Random.Range(1, 100);
         int agility = 100 - power;
@@ -133,7 +133,28 @@ public class CreatureBattle : MonoBehaviour
             level++;
         }
 
+        int movesToCreate = UnityEngine.Random.Range(1, 5);
+        for (int i = 1; i <= movesToCreate; i++)
+        {
+            BattleMove move = new BattleMove();
+            move.attribute = RandomAttribute();
+            move.usesPower = RandomBool();
+            move.name = genMoveNames[UnityEngine.Random.Range(0, genMoveNames.Length)];
+        }
+
         return newCreature;
+    }
+
+    private Attribute RandomAttribute()
+    {
+        Array attribValues = Enum.GetValues(typeof(Attribute));
+        Attribute attrib = (Attribute)attribValues.GetValue(UnityEngine.Random.Range(0, attribValues.Length));
+        return attrib;
+    }
+
+    private bool RandomBool()
+    {
+        return UnityEngine.Random.value > 0.5f ? true : false;
     }
 
     private void PlayerCommandClicked(string command)

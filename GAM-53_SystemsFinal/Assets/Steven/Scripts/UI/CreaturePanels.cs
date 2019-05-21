@@ -32,16 +32,27 @@ public class CreaturePanels : MonoBehaviour
         playerCreatureHealth.text = player.Health.ToString() + " / " + player.MaxHealth.ToString();
         if (immediate)
         {
-            playerCreatureBar.fillAmount = (float)player.Health / (float)player.MaxHealth;
+            float fillAmount = (float)player.Health / (float)player.MaxHealth;
+            if (float.IsNaN(fillAmount))
+            {
+                fillAmount = 0.0f;
+            }
+            playerCreatureBar.fillAmount = fillAmount;
         }
         else
         {
             if (playerBarMoving)
-            {                
+            {
+                Debug.Log("[F" + Time.frameCount + "] Forced to kill bar animator.");
                 StopAllCoroutines();
                 playerBarMoving = false;
             }
-            StartCoroutine(AnimateHealthBar(playerCreatureBar, playerCreatureBar.fillAmount, (float)player.Health / (float)player.MaxHealth, true));
+            float fillAmount = (float)player.Health / (float)player.MaxHealth;
+            if (float.IsNaN(fillAmount))
+            {
+                fillAmount = 0.0f;
+            }
+            StartCoroutine(AnimateHealthBar(playerCreatureBar, playerCreatureBar.fillAmount, fillAmount, true));
         }
     }
 
@@ -50,16 +61,27 @@ public class CreaturePanels : MonoBehaviour
         enemyCreatureName.text = enemy.Name;
         if (immediate)
         {
-            enemyCreatureBar.fillAmount = (float)enemy.Health / (float)enemy.MaxHealth;
+            float fillAmount = (float)enemy.Health / (float)enemy.MaxHealth;
+            if (float.IsNaN(fillAmount))
+            {
+                fillAmount = 0.0f;
+            }
+            enemyCreatureBar.fillAmount = fillAmount;
         }
         else
         {
             if (enemyBarMoving)
             {
+                Debug.Log("[F" + Time.frameCount + "] Forced to kill bar animator.");
                 StopAllCoroutines();
                 enemyBarMoving = false;
             }
-            StartCoroutine(AnimateHealthBar(enemyCreatureBar, enemyCreatureBar.fillAmount, (float)enemy.Health / (float)enemy.MaxHealth, false));
+            float fillAmount = (float)enemy.Health / (float)enemy.MaxHealth;
+            if (float.IsNaN(fillAmount))
+            {
+                fillAmount = 0.0f;
+            }
+            StartCoroutine(AnimateHealthBar(enemyCreatureBar, enemyCreatureBar.fillAmount, fillAmount, false));
         }
     }
 
@@ -74,9 +96,14 @@ public class CreaturePanels : MonoBehaviour
             enemyBarMoving = true;
         }
         float fillTime = 0.0f;
-        while (playerCreatureBar.fillAmount != to)
+        while (!Mathf.Approximately(playerCreatureBar.fillAmount, to))
         {
-            playerCreatureBar.fillAmount = Mathf.Lerp(from, to, fillTime / BarSlideTimeInSecs);
+            float fillAmount = Mathf.Lerp(from, to, fillTime / BarSlideTimeInSecs);
+            if (float.IsNaN(fillAmount))
+            {
+                fillAmount = 0.0f;
+            }
+            playerCreatureBar.fillAmount = fillAmount;
             fillTime += Time.deltaTime;
             if (fillTime > BarSlideTimeInSecs)
             {

@@ -50,7 +50,14 @@ public class CreaturePanels_Test
         
         panelManager.UpdatePlayer(bc);
 
-        Assert.AreEqual(name, playerName.text);
+        if (name == null)
+        {
+            Assert.IsEmpty(playerName.text);
+        }
+        else
+        {
+            Assert.AreEqual(name, playerName.text);
+        }
     }
 
     [TestCase(100,100)]
@@ -78,7 +85,7 @@ public class CreaturePanels_Test
         panelManager.UpdatePlayer(bc);
 
         string testString = min.ToString() + " / " + max.ToString();        
-        Assert.AreEqual(testString, playerName.text);
+        Assert.AreEqual(testString, playerHP.text);
     }
 
     [TestCase(100, 100)]
@@ -103,17 +110,23 @@ public class CreaturePanels_Test
             max = bc.MaxHealth;
         }
 
-        if (max == 0)
-        {
-            Assert.Throws<System.DivideByZeroException>(() => panelManager.UpdatePlayer(bc, true));
-            return;
-        }
-        else
-        {
-            panelManager.UpdatePlayer(bc);
-        }
+        panelManager.UpdatePlayer(bc, true);
 
         float expected = (float)min / (float)max;
+
+        if (float.IsNaN(expected))
+        {
+            expected = 0.0f;
+        }
+        else if (expected < 0.0f)
+        {
+            expected = 0.0f;
+        }
+        else if (expected > 1.0f)
+        {
+            expected = 1.0f;
+        }
+
         Assert.AreEqual(expected, playerBar.fillAmount);
     }
 
@@ -127,7 +140,14 @@ public class CreaturePanels_Test
 
         panelManager.UpdateEnemy(bc);
 
-        Assert.AreEqual(name, enemyName.text);
+        if (name == null)
+        {
+            Assert.IsEmpty(enemyName.text);
+        }
+        else
+        {
+            Assert.AreEqual(name, enemyName.text);
+        }
     }
 
     [TestCase(100, 100)]
@@ -152,17 +172,23 @@ public class CreaturePanels_Test
             max = bc.MaxHealth;
         }
 
-        if (max == 0)
-        {
-            Assert.Throws<System.DivideByZeroException>(() => panelManager.UpdateEnemy(bc, true));
-            return;
-        }
-        else
-        {
-            panelManager.UpdateEnemy(bc);
-        }
+        panelManager.UpdateEnemy(bc, true);
 
         float expected = (float)min / (float)max;
+
+        if (float.IsNaN(expected))
+        {
+            expected = 0.0f;
+        }
+        else if (expected < 0.0f)
+        {
+            expected = 0.0f;
+        }
+        else if (expected > 1.0f)
+        {
+            expected = 1.0f;
+        }
+
         Assert.AreEqual(expected, enemyBar.fillAmount);
     }
 }
