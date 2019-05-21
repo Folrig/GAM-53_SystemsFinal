@@ -27,6 +27,10 @@ public class BattleCreature
     public int CurrentXP { get { return this._xp; } }
     public int Health { get { return this._health; } }
     public int MaxHealth { get { return this._maxHealth; } }
+    public int Power { get { return this._power; } }
+    public int Agility { get { return this._agility; } }
+    public int Level { get { return this._level; } }
+    public GameObject Avatar { get { return this._avatar; } }
     #endregion
 
     #region Methods
@@ -50,12 +54,17 @@ public class BattleCreature
         this._condition = Condition.Normal;
     }
 
-    public AttackResult ReceiveAttack(int damage, BattleMove move)
+    public void ReceiveDamage(int damage)
     {
-        // Discuss how to determine the result, this might possibly be moved to the Battle class and the creature would take the result
-        AttackResult attack = new AttackResult();
-
-        return attack;
+        if (damage < 0)
+        {
+            damage = 0;
+        }
+        else if (damage >= this._health)
+        {
+            this._health = 0;
+            this._isFainted = true;
+        }
     }
 
     public void AdjustHealth(int delta)
@@ -76,6 +85,8 @@ public class BattleCreature
     public void Revive()
     {
         this._isFainted = false;
+        this._health = this._maxHealth;
+        CureCondition();
     }
 
     public void GainXP(int delta)
@@ -83,17 +94,23 @@ public class BattleCreature
         if (delta < 0)
         {
             Debug.LogError("XP cannot be negative.");
+            return;
         }
         else
         {
+            if (delta >= NextLevelXP())
+            {
+                LevelUp();
+            }
             this._xp += delta;
         }
     }
 
     public int NextLevelXP()
     {
-        // Calculations for next level
-        int xp = 0;
+        // Calculations for next level (I threw an arbitrary formula in, feel free to change -- Steve)
+        int levelGoal = 50 + 50 * Mathf.RoundToInt(Mathf.Pow(1.25f, (float)this._level));
+        int xp = levelGoal - this._xp;
         return xp;
     }
 
@@ -106,9 +123,11 @@ public class BattleCreature
             Debug.LogError("BattleCreature.LevelUp() - Level cannot be less than 1");
             throw new NotSupportedException();
         }
+
+        // Insert level up benefits to stats here
     }
 
-    public void InfliectCondition(Condition condition)
+    public void InflictCondition(Condition condition)
     {
         this._condition = condition;
     }
