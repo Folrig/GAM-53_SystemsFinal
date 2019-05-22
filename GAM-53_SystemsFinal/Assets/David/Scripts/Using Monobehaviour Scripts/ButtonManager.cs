@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 //[UnityTestAttribute]
 public class ButtonManager : MonoBehaviour
 {
+    private PokeMawnDexMainScript pokeMainScript;
     //private BattleCreature battleCreatureStats;
     private PlayerPrefs game;
     [SerializeField]
@@ -91,6 +92,8 @@ public class ButtonManager : MonoBehaviour
         BinaryFormatter formatter = new BinaryFormatter();
         formatter.Serialize(file, game);*/
        // formatter.Serialize(file, this.battleCreatureStats);
+
+        GetComponent<PokeMawnDexMainScript>().creature = new CreatureData2();  //would this work? ... maybe..?
     }
     public void CreateNew()
     {

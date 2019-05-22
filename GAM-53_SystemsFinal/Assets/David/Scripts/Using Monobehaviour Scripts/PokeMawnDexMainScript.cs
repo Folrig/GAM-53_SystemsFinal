@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PokeMawnDexMainScript :  MonoBehaviour 
 {
+    public CreatureData2 creature;
 
 	
 	void Start () 
@@ -19,7 +20,7 @@ public class PokeMawnDexMainScript :  MonoBehaviour
 
     void UpdatingData()
     {
-     
+       creature = new CreatureData2();
     }
 
 
