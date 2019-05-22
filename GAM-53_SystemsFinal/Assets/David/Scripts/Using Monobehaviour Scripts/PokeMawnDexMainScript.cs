@@ -2,15 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokeMawnDexMainScript : MonoBehaviour {
+public class PokeMawnDexMainScript :  MonoBehaviour 
+{
 
-	// Use this for initialization
-	void Start () {
+	
+	void Start () 
+    {
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	
+	void Update () 
+    {
 		
 	}
+
+    void UpdatingData()
+    {
+     
+    }
+
+
 }

@@ -4,12 +4,16 @@ using UnityEngine;
 //using NUnit.Framework;
 using System;
 using UnityEngine.UI;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
 
 //[TestFixture]
 //[UnityTestAttribute]
 public class ButtonManager : MonoBehaviour
 {
+    //private BattleCreature battleCreatureStats;
+    private PlayerPrefs game;
     [SerializeField]
     private Text nameOfCreature;
     [SerializeField]
@@ -46,6 +50,8 @@ public class ButtonManager : MonoBehaviour
     [SerializeField]
     private GameObject createButton;
     [SerializeField]
+    private GameObject creature1;
+    [SerializeField]
     private List<PlayerPrefs> BattleCreatures;
     //[SerializeField]
     // private GameObject [] deletes;
@@ -62,7 +68,12 @@ public class ButtonManager : MonoBehaviour
 
     }
 
-    public void Delete1()
+	private void Awake()
+	{
+        
+	}
+
+	public void Delete1()
     {
 
     }
@@ -76,7 +87,10 @@ public class ButtonManager : MonoBehaviour
     }
     public void SaveCreature()
     {
-        
+        /*FileStream file = new FileStream(Application.persistentDataPath + "/Creature.dat", FileMode.OpenOrCreate);
+        BinaryFormatter formatter = new BinaryFormatter();
+        formatter.Serialize(file, game);*/
+       // formatter.Serialize(file, this.battleCreatureStats);
     }
     public void CreateNew()
     {
@@ -85,6 +99,7 @@ public class ButtonManager : MonoBehaviour
     }
     public void LoadData()
     {
+        creature1.SetActive(true);
 
     }
 
@@ -105,12 +120,19 @@ public class ButtonManager : MonoBehaviour
     {
         listOfCreatures.SetActive(true);
         mainMenu.SetActive(false);
+        creature1.SetActive(false);
     }
     public void BackToMenu()
     {
         mainMenu.SetActive(true);
         listOfCreatures.SetActive(false);
         creatingCreaturePanel.SetActive(false);
+        creature1.SetActive(false);
+    }
+    public void CloseWindow()
+    {
+        creature1.SetActive(false);
+        listOfCreatures.SetActive(true);
     }
 
 }
