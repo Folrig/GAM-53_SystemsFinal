@@ -66,6 +66,8 @@ public class BattleCreature
             this._health = 0;
             this._isFainted = true;
         }
+
+        this._health -= damage;
     }
 
     public void AdjustHealth(int delta)

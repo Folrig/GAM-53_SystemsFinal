@@ -16,16 +16,6 @@ public class CreaturePanels : MonoBehaviour
     private bool playerBarMoving = false;
     private bool enemyBarMoving = false;
 
-    private void Start()
-    {
-        playerCreatureName.text = "";
-        playerCreatureHealth.text = "0 / 0";
-        playerCreatureBar.fillAmount = 1f;
-
-        enemyCreatureName.text = "";
-        enemyCreatureBar.fillAmount = 1f;
-    }
-
     public void UpdatePlayer(BattleCreature player, bool immediate = false)
     {
         playerCreatureName.text = player.Name;
@@ -96,14 +86,14 @@ public class CreaturePanels : MonoBehaviour
             enemyBarMoving = true;
         }
         float fillTime = 0.0f;
-        while (!Mathf.Approximately(playerCreatureBar.fillAmount, to))
+        while (!Mathf.Approximately(healthBar.fillAmount, to))
         {
             float fillAmount = Mathf.Lerp(from, to, fillTime / BarSlideTimeInSecs);
             if (float.IsNaN(fillAmount))
             {
                 fillAmount = 0.0f;
             }
-            playerCreatureBar.fillAmount = fillAmount;
+            healthBar.fillAmount = fillAmount;
             fillTime += Time.deltaTime;
             if (fillTime > BarSlideTimeInSecs)
             {
@@ -111,7 +101,7 @@ public class CreaturePanels : MonoBehaviour
             }
             yield return null;
         }
-        playerCreatureBar.fillAmount = to;
+        healthBar.fillAmount = to;
         if (barIsPlayers)
         {
             playerBarMoving = false;
