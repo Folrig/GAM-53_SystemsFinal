@@ -31,7 +31,6 @@ public class BattleCreature
     public int Power { get { return this._power; } set { _power = value; } }
     public int Agility { get { return this._agility; } set { _agility = value; } }
     public int Level { get { return this._level; } set { _level = value; } }
-    public Condition Condition { get { return this._condition; } set { _condition = value; } }
     public GameObject Avatar { get { return this._avatar; } set { _avatar = value; } }
     public Attribute Attribute { get { return this._attribute; } set { _attribute = value; } }
     #endregion
@@ -87,6 +86,21 @@ public class BattleCreature
         }
     }
 
+    public void AdjustHealth(float delta)
+    {
+        this._health += Mathf.RoundToInt(delta);
+
+        if (_health > _maxHealth)
+        {
+            _health = _maxHealth;
+        }
+        if (_health <= 0)
+        {
+            _health = 0;
+            _isFainted = true;
+        }
+    }
+
     public void Revive()
     {
         this._isFainted = false;
@@ -96,18 +110,15 @@ public class BattleCreature
 
     public void GainXP(int delta)
     {
-        if (delta < 0)
+        if (delta > 0)
         {
-            Debug.LogError("XP cannot be negative.");
-            return;
-        }
-        else
-        {
-            if (delta >= NextLevelXP())
+            this._xp += delta;
+
+            while (this._xp > NextLevelXP())
             {
+                this._xp -= NextLevelXP();
                 LevelUp();
             }
-            this._xp += delta;
         }
     }
 
@@ -115,8 +126,7 @@ public class BattleCreature
     {
         // Calculations for next level (I threw an arbitrary formula in, feel free to change -- Steve)
         int levelGoal = 50 + 50 * Mathf.RoundToInt(Mathf.Pow(1.25f, (float)this._level));
-        int xp = levelGoal - this._xp;
-        return xp;
+        return levelGoal;
     }
 
     private void LevelUp()
