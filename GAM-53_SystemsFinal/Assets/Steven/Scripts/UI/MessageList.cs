@@ -36,7 +36,7 @@ public class MessageList : MonoBehaviour
         RectTransform listRect = transform as RectTransform;
         listRect.sizeDelta = new Vector2(listRect.sizeDelta.x, listRect.sizeDelta.y + newTextHeight + layout.spacing);
 
-        scrollbar.value = 1f;
+        scrollbar.value = 0f;
     }
 
 	private void OnEnable()

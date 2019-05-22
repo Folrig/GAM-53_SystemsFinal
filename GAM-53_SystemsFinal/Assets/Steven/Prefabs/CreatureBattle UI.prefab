@@ -862,7 +862,8 @@ MonoBehaviour:
   creaturePanels: {fileID: 114854431230617610}
   playerAvatarPosition: {fileID: 0}
   enemyAvatarPosition: {fileID: 0}
-  messageWaitTime: 3
+  playersTurn: 0
+  messageWaitTime: 2
 --- !u!114 &114918785186165846
 MonoBehaviour:
   m_ObjectHideFlags: 1

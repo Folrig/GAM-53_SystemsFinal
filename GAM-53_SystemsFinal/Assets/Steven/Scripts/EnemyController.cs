@@ -1,23 +1,21 @@
 ﻿public class EnemyController : CreatureController
 {
-    public EnemyController(BattleCreature creature, CreatureBattle battleController) : base(creature, battleController) { }
+    public EnemyController(BattleCreature creature, CreatureBattle battleController) : base(creature, battleController){}
 
     public override void GetAttack()
     {
         BattleMove chosenMove = creature.moves[UnityEngine.Random.Range(0, creature.moves.Count)];
-        /* Need access to BattleCreature power and agility for this to work
-         int strength;
 
-        if (move.usesPower)
+        int strength;
+
+        if (chosenMove.usesPower)
         {
-            strength = creature.power;
+            strength = creature.Power;
         }
         else
         {
-            strength = creature.agility;
+            strength = creature.Agility;
         }
-
         battleController.SendAttack(chosenMove, strength);
-        */
     }
 }

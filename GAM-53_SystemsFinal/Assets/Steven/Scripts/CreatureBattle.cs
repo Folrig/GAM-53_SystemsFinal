@@ -25,11 +25,21 @@ public class CreatureBattle : MonoBehaviour
     private Animator playerAnimator;
     private Animator enemyAnimator;
 
-    private bool playersTurn = false;
+    public bool playersTurn = false;
     [SerializeField] private float messageWaitTime = 3.0f;
 
     private static readonly string[] genCreatureNames = { "Spot", "Fluffy", "Spike", "Fido", "Mittens", "Rex", "Princess", "Buddy", "Bear", "Duke" };
     private static readonly string[] genMoveNames = { "Crusher", "Whiplash", "Inferno", "Bladespin", "Deluge" };
+
+    private void OnEnable()
+    {
+        commandPanel.CommandClick += PlayerCommandClicked;
+    }
+
+    private void OnDisable()
+    {
+        commandPanel.CommandClick -= PlayerCommandClicked;
+    }
 
     public void Initialize(BattleCreature playerCreature, Transform playerAvatarPosition, Transform enemyAvatarPosition)
     {
@@ -37,8 +47,14 @@ public class CreatureBattle : MonoBehaviour
         this.enemyAvatarPosition = enemyAvatarPosition;
 
         this.playerCreature = playerCreature;
-        // The below line should feed a desired level to the generator, but I'd need the player creature's level to base it off
-        enemyCreature = GenerateEnemy(1);
+        int lowLevelBound = playerCreature.Level - 2;
+        if (lowLevelBound < 1)
+        {
+            lowLevelBound = 1;
+        }
+        int highLevelBound = playerCreature.Level + 2;
+        int enemyLevel = UnityEngine.Random.Range(lowLevelBound, highLevelBound + 1);
+        enemyCreature = GenerateEnemy(enemyLevel);
 
         // I lack access to the avatars to instantiate them
         // playerAvatar = Instantiate(playerCreature.Avatar, playerAvatarPosition);
@@ -64,14 +80,15 @@ public class CreatureBattle : MonoBehaviour
         StartCoroutine(BattleIntro());
     }
 
-    private void OnEnable()
+    private IEnumerator BattleIntro()
     {
-        commandPanel.CommandClick += PlayerCommandClicked;
-    }
+        yield return StartCoroutine(MessageWithDelay("A wild " + enemyCreature.Name + " appears!"));
+        if (playersTurn)
+        {
+            yield return StartCoroutine(MessageWithDelay("Command?"));
+        }
 
-    private void OnDisable()
-    {
-        commandPanel.CommandClick -= PlayerCommandClicked;
+        (playersTurn ? (CreatureController)playerController : (CreatureController)enemyController).GetAttack();
     }
 
     public void SendAttack(BattleMove attack, int strength)
@@ -80,18 +97,63 @@ public class CreatureBattle : MonoBehaviour
         {
             AttackResult enemyResult = enemyController.ReceiveAttack(attack, strength, playerCreature.Agility);
             commandPanel.TogglePanel(false);
-            StartCoroutine(ShowAttackResult(enemyCreature, playerCreature, enemyResult));
+            StartCoroutine(ShowAttackResult(playerCreature, enemyCreature, attack.name, enemyResult));
         }
         else
         {
             AttackResult playerResult = playerController.ReceiveAttack(attack, strength, enemyCreature.Agility);
-            StartCoroutine(ShowAttackResult(playerCreature, enemyCreature, playerResult));
+            StartCoroutine(ShowAttackResult(enemyCreature, playerCreature, attack.name, playerResult));
         }
     }
 
-    private void ShowMessage(string message)
+    private IEnumerator ShowAttackResult(BattleCreature attacker, BattleCreature defender, string attackName, AttackResult result)
     {
-        messageList.AddMessage(message);
+        yield return StartCoroutine(MessageWithDelay(attacker.Name + " uses " + attackName + "!"));
+
+        // Animation coroutine call here
+
+        if (result.isDodged)
+        {
+            yield return StartCoroutine(MessageWithDelay(defender.Name + " deftly evades harm!"));
+        }
+        else
+        {
+            if (result.isStrong)
+            {
+                yield return StartCoroutine(MessageWithDelay(defender.Name + " finds itelf vulnerable to the attack!"));
+            }
+            else if (result.isWeak)
+            {
+                yield return StartCoroutine(MessageWithDelay(defender.Name + " defiantly resists the attack!"));
+            }
+
+            if (defender == playerCreature)
+            {
+                creaturePanels.UpdatePlayer(defender);
+            }
+            else
+            {
+                creaturePanels.UpdateEnemy(defender);
+            }
+            yield return StartCoroutine(MessageWithDelay(defender.Name + " receives " + result.damageTaken + " damage."));
+
+            if (defender.IsFainted)
+            {
+                yield return StartCoroutine(MessageWithDelay(defender.Name + " falls over and faints!"));
+                yield return StartCoroutine(FinishBattle());
+                yield break;
+            }
+        }
+        playersTurn = !playersTurn;
+        if (playersTurn)
+        {
+            ShowMessage("Command?");
+            playerController.GetAttack();
+        }
+        else
+        {
+            enemyController.GetAttack();
+        }
     }
 
     private IEnumerator FinishBattle()
@@ -104,8 +166,7 @@ public class CreatureBattle : MonoBehaviour
         {
             yield return StartCoroutine(MessageWithDelay("Your Pokemawn is victorious!"));
             int toNextLevel = playerCreature.NextLevelXP();
-            // Need access to creature level to determine how much XP to generate
-            int fightXP = CalculateXP(1);
+            int fightXP = CalculateXP(enemyCreature.Level);
             yield return StartCoroutine(MessageWithDelay(playerCreature.Name + " receives " + fightXP + " XP from the fight."));
             playerCreature.GainXP(fightXP);
             if (fightXP > toNextLevel)
@@ -140,6 +201,7 @@ public class CreatureBattle : MonoBehaviour
             move.attribute = RandomAttribute();
             move.usesPower = RandomBool();
             move.name = genMoveNames[UnityEngine.Random.Range(0, genMoveNames.Length)];
+            newCreature.moves.Add(move);
         }
 
         return newCreature;
@@ -162,63 +224,9 @@ public class CreatureBattle : MonoBehaviour
         playerController.CommandInput(command);
     }
 
-    private IEnumerator ShowAttackResult(BattleCreature attacker, BattleCreature defender, AttackResult result)
+    private void ShowMessage(string message)
     {
-        if (result.isDodged)
-        {
-            yield return StartCoroutine(MessageWithDelay(defender.Name + " deftly evades harm!"));
-        }
-        else
-        {
-            if (result.isStrong)
-            {
-                yield return StartCoroutine(MessageWithDelay(defender.Name + " finds itelf vulnerable to the attack!"));
-            }
-            else if (result.isWeak)
-            {
-                yield return StartCoroutine(MessageWithDelay(defender.Name + " defiantly resists the attack!"));
-            }
-
-            if (defender == playerCreature)
-            {
-                creaturePanels.UpdatePlayer(defender);
-            }
-            else
-            {
-                creaturePanels.UpdateEnemy(defender);
-            }
-            yield return StartCoroutine(MessageWithDelay(defender.Name + " receives " + result.damageTaken + " damage."));
-
-            if (defender.IsFainted)
-            {
-                yield return StartCoroutine(MessageWithDelay(defender.Name + " falls over and faints!"));
-                yield return StartCoroutine(FinishBattle());
-            }
-            else
-            {
-                playersTurn = !playersTurn;
-                if (playersTurn)
-                {
-                    ShowMessage("Command?");
-                    playerController.GetAttack();
-                }
-                else
-                {
-                    enemyController.GetAttack();
-                }
-            }
-        }
-    }
-
-    private IEnumerator BattleIntro()
-    {
-        yield return StartCoroutine(MessageWithDelay("A wild " + enemyCreature.Name + " appears!"));
-        if (playersTurn)
-        {
-            yield return StartCoroutine(MessageWithDelay("Command?"));
-        }
-
-        (playersTurn ? (CreatureController)playerController : (CreatureController)enemyController).GetAttack();
+        messageList.AddMessage(message);
     }
 
     private IEnumerator MessageWithDelay(string message)

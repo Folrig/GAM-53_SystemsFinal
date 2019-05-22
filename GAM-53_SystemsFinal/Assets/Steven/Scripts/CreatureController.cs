@@ -9,7 +9,7 @@ abstract public class CreatureController
     {
         if (creature == null)
             throw new System.Exception("Creature of a CreatureController cannot be null.");
-        if (battleController = null)
+        if (battleController == null)
             throw new System.Exception("Battle Controller of a CreatureController cannot be null.");
         
         this.creature = creature;

@@ -1,4 +1,5 @@
-﻿public class PlayerController : CreatureController
+﻿using UnityEngine;
+public class PlayerController : CreatureController
 {
     private CommandPanel panel;
     private bool waitingForInput = false;
@@ -25,33 +26,34 @@
     {
         if (!waitingForInput)
             return;
-
-        BattleMove chosenMove;
-        chosenMove.name = "";
+        
+        BattleMove chosenMove = new BattleMove { name = "BadMove", usesPower = false, attribute = Attribute.Fire };
+        bool moveFound = false;
         foreach (BattleMove move in creature.moves)
         {
             if (move.name == command)
             {
                 chosenMove = move;
+                moveFound = true;
                 break;
             }
         }
-        if (chosenMove.name == "")
-            return;
-
-        /* Need access to BattleCreature power and agility for this to work
-         int strength;
-
-        if (move.usesPower)
+        if (!moveFound)
         {
-            strength = creature.power;
+            throw new UnityException("Cannot find command that was clicked on!");
+        }
+
+        int strength;
+
+        if (chosenMove.usesPower)
+        {
+            strength = creature.Power;
         }
         else
         {
-            strength = creature.agility;
+            strength = creature.Agility;
         }
 
         battleController.SendAttack(chosenMove, strength);
-        */
     }
 }
