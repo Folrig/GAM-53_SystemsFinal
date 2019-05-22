@@ -41,8 +41,6 @@ public class ButtonManager : MonoBehaviour
     [SerializeField]
     private GameObject creatingCreaturePanel;
     [SerializeField]
-    private GameObject startButton;
-    [SerializeField]
     private GameObject savingButton;
     [SerializeField]
     private GameObject loadingDataButton;
@@ -78,14 +76,7 @@ public class ButtonManager : MonoBehaviour
     {
 
     }
-    public void StartGame()
-    {
-        SceneManager.LoadScene("DavidTestingScene");
-    }
-    public void SaveGame()
-    {
-        
-    }
+
     public void SaveCreature()
     {
         /*FileStream file = new FileStream(Application.persistentDataPath + "/Creature.dat", FileMode.OpenOrCreate);
