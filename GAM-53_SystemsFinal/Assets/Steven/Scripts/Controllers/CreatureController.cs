@@ -29,7 +29,7 @@ abstract public class CreatureController
             return result;
         }
         
-        int vulnerability = CompareAttributes(attack.attribute, creature.Attrib);
+        int vulnerability = CompareAttributes(attack.attribute, creature.Attribute);
         if (vulnerability == 1)
         {
             result.isStrong = true;

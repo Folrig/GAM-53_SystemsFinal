@@ -4,34 +4,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Does not derive from MonoBehaviour as per UML diagram but this could be simplification of the diagram
+[Serializable]
 public class BattleCreature
 {
     #region Variables
-    private string _name;
-    private Attribute _attribute;
-    private int _health;
-    private int _maxHealth;
-    private int _power;
-    private int _agility;
-    private bool _isFainted;
-    private int _level;
-    private int _xp;
-    private Condition _condition;
-    private GameObject _avatar;
-    public List<BattleMove> moves = new List<BattleMove>();
+    [SerializeField] private string _name;
+    [SerializeField] private Attribute _attribute;
+    [SerializeField] private int _health;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _power;
+    [SerializeField] private int _agility;
+    [SerializeField] private bool _isFainted;
+    [SerializeField] private int _level;
+    [SerializeField] private int _xp;
+    [SerializeField] private Condition _condition;
+    [SerializeField] private GameObject _avatar;
+    [SerializeField] public List<BattleMove> moves = new List<BattleMove>();
     #endregion
 
     #region Properties
     public string Name { get { return this._name; } set { _name = value; } }
-    public bool IsFainted { get { return this._isFainted; } }
-    public int CurrentXP { get { return this._xp; } }
-    public int Health { get { return this._health; } }
-    public int MaxHealth { get { return this._maxHealth; } }
-    public int Power { get { return this._power; } }
-    public int Agility { get { return this._agility; } }
-    public int Level { get { return this._level; } }
-    public GameObject Avatar { get { return this._avatar; } }
-    public Attribute Attrib { get { return this._attribute; } }
+    public bool IsFainted { get { return this._isFainted; } set { _isFainted = value; } }
+    public int CurrentXP { get { return this._xp; } set { _xp = value; } }
+    public int Health { get { return this._health; } set { _health = value; } }
+    public int MaxHealth { get { return this._maxHealth; } set { _maxHealth = value; } }
+    public int Power { get { return this._power; } set { _power = value; } }
+    public int Agility { get { return this._agility; } set { _agility = value; } }
+    public int Level { get { return this._level; } set { _level = value; } }
+    public Condition Condition { get { return this._condition; } set { _condition = value; } }
+    public GameObject Avatar { get { return this._avatar; } set { _avatar = value; } }
+    public Attribute Attribute { get { return this._attribute; } set { _attribute = value; } }
     #endregion
 
     #region Methods
