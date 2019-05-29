@@ -39,14 +39,14 @@ abstract public class CreatureController
             result.isWeak = true;
         }
 
-        int damage = Mathf.RoundToInt(Random.Range(0.75f, 1.0f) * (float)strength * (1.0f - 0.5f * (float)vulnerability));
+        int damage = Mathf.RoundToInt(Random.Range(0.75f, 1.0f) * (float)strength * (1.0f + 0.5f * (float)vulnerability));
         if (damage > creature.Health)
         {
             damage = creature.Health;
         }
         result.damageTaken = damage;
         creature.ReceiveDamage(damage);
-
+        
         return result;
     }
 

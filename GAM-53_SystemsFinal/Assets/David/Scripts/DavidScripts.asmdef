@@ -1,3 +1,11 @@
-﻿{
-	"name": "DavidScripts"
+{
+    "name": "DavidScripts",
+    "references": [
+        "JamesScripts",
+        "SteveScripts"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
 }
