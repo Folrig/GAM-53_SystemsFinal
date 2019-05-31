@@ -12,11 +12,13 @@ public class PokeIndexScript : MonoBehaviour
     void Start()
     {
         List<BattleCreature> creature = new List<BattleCreature>();
-        CreatureIndex = new creature;
-        CreatureIndex = new List<BattleCreature>();
+        // David, I really wish you would fix your code errors before pushing a commit.
+        // Code errors stop anybody from playtesting anything until your errors are fixed.
+        //CreatureIndex = new creature;
+        //CreatureIndex = new List<BattleCreature>();
 
-        creature.Add(new BattleCreature("Creature1", water, 100, 100, 50, 50));
-        creature.Add(new BattleCreature("Creature2", fire, 80, 80, 45, 65));
+        //creature.Add(new BattleCreature("Creature1", water, 100, 100, 50, 50));
+        //creature.Add(new BattleCreature("Creature2", fire, 80, 80, 45, 65));
 
     }
 
@@ -36,7 +38,7 @@ public class PokeIndexScript : MonoBehaviour
         creatureNum = index;
     }
 
-    public void 
+    //public void 
 
 
 }
