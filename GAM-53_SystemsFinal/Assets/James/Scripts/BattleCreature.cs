@@ -138,8 +138,6 @@ public class BattleCreature
             Debug.LogError("BattleCreature.LevelUp() - Level cannot be less than 1");
             throw new NotSupportedException();
         }
-
-        // Insert level up benefits to stats here
     }
 
     public void InflictCondition(Condition condition)
