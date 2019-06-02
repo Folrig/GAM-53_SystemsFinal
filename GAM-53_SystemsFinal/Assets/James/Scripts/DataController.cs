@@ -5,41 +5,25 @@ using UnityEngine;
 
 public class DataController : MonoBehaviour
 {
-    #region Variables
-    private string gameDataFileName = "data.json";
-    private PokemawnDexData[] allPokemawnDexData;
-    #endregion
-
     #region Methods
-    void Start()
+    public static void SaveData<T>(string fileName, T objectType)
     {
-		
-	}
-	
-	void Update()
-    {
-		
-	}
+        string fileSave = JsonUtility.ToJson(objectType);
+        File.WriteAllText("Data/" + fileName + ".json", fileSave);
+    }
 
-    private void LoadGameData()
+    private void LoadGameData<T>(string fileName, T objectType)
     {
-        // Path.Combine combines strings into a file path
-        // Application.StreamingAssets points to Assets/StreamingAssets in the Editor, and the StreamingAssets folder in a build
-        string filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
+        string savedData = null;
 
-        if (File.Exists(filePath))
+        if (File.Exists("Data/" + fileName + ".json"))
         {
-            // Read the json from the file into a string
-            string dataAsJson = File.ReadAllText(filePath);
-            // Pass the json to JsonUtility, and tell it to create a GameData object from it
-            PokemawnDexData loadedData = JsonUtility.FromJson<PokemawnDexData>(dataAsJson);
-
-            // Retrieve the allRoundData property of loadedData
-            allPokemawnDexData = loadedData.allPokemawn;
+            savedData = File.ReadAllText("Data/" + fileName + ".json");
+            JsonUtility.FromJsonOverwrite(savedData, objectType);
         }
         else
         {
-            Debug.LogError("Cannot load game data!");
+            SaveData(fileName, objectType);
         }
     }
     #endregion
