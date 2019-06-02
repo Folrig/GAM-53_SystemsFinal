@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -204,4 +205,9 @@ public class ButtonManager : MonoBehaviour
         newMenu.SetActive(true);
     }
     #endregion Helper Functions
+
+    public void ShowListOfCreatures()
+    {
+        SceneManager.LoadScene("Creature Index");
+    }
 }
