@@ -10,8 +10,6 @@ public class MessageList : MonoBehaviour
     const float SIZE_PER_LINE = 22f;
     const float PADDING_PER_LINE = 1f;
 
-    private float verticalHeight = 0.0f;
-
     public void AddMessage(string message)
     {
         GameObject newMessage = Instantiate(messagePrefab, transform);

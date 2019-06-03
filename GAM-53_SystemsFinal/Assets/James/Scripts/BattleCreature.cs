@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Does not derive from MonoBehaviour as per UML diagram but this could be simplification of the diagram
 [Serializable]
@@ -18,7 +18,7 @@ public class BattleCreature
     [SerializeField] private int _level;
     [SerializeField] private int _xp;
     [SerializeField] private Condition _condition;
-    [SerializeField] private GameObject _avatar;
+    [SerializeField] private Sprite _avatar;
     [SerializeField] public List<BattleMove> moves = new List<BattleMove>();
     #endregion
 
@@ -31,7 +31,7 @@ public class BattleCreature
     public int Power { get { return this._power; } set { _power = value; } }
     public int Agility { get { return this._agility; } set { _agility = value; } }
     public int Level { get { return this._level; } set { _level = value; } }
-    public GameObject Avatar { get { return this._avatar; } set { _avatar = value; } }
+    public Sprite Avatar { get { return this._avatar; } set { _avatar = value; } }
     public Attribute Attribute { get { return this._attribute; } set { _attribute = value; } }
     #endregion
 
@@ -150,11 +150,6 @@ public class BattleCreature
     public void CureCondition()
     {
         this._condition = Condition.Normal;
-    }
-
-    public void SetAvatar(GameObject newAvatar)
-    {
-        this._avatar = newAvatar;
     }
     #endregion
 }

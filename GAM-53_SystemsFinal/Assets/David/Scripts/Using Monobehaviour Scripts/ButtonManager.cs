@@ -14,8 +14,10 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private GameObject firstCreateScreen;
     [SerializeField] private GameObject secondCreateScreen;
 
+    [SerializeField] private Image creatorBodyDisplay;
     [SerializeField] private InputField creatorNameInput;
     [SerializeField] private Dropdown creatorAttributeDropDown;
+    [SerializeField] private Dropdown creatorBodyDropDown;
     [SerializeField] private Slider creatorBalanceSlider;
     [SerializeField] private Text creatorPowerReadout;
     [SerializeField] private Text creatorAgilityReadout;
@@ -30,6 +32,7 @@ public class ButtonManager : MonoBehaviour
 
     #region Members
     private PokeMawnDexMainScript pokeMainScript;
+    private Sprite creatorAvatar;
     private string creatorName;
     private Attribute creatorAttribute;
     private int creatorPowerScore;
@@ -59,6 +62,7 @@ public class ButtonManager : MonoBehaviour
     public void FinishClicked()
     {
         BattleCreature newCreature = new BattleCreature(creatorName, creatorAttribute, 100, 100, creatorPowerScore, creatorAgilityScore);
+        newCreature.Avatar = creatorAvatar;
         foreach (BattleMove move in creatorMoves)
         {
             newCreature.moves.Add(move);
@@ -75,6 +79,12 @@ public class ButtonManager : MonoBehaviour
     public void AttributeDropDownChanged()
     {
         creatorAttribute = (Attribute)creatorAttributeDropDown.value;
+    }
+
+    public void BodyDropDownChanged()
+    {
+        creatorBodyDisplay.sprite = creatorBodyDropDown.options[creatorBodyDropDown.value].image;
+        creatorAvatar = creatorBodyDisplay.sprite;
     }
 
     public void BalanceSliderChanged()
@@ -158,6 +168,7 @@ public class ButtonManager : MonoBehaviour
 
     private void InitTempBattleCreature()
     {
+        creatorAvatar = creatorBodyDropDown.options[0].image;
         creatorName = string.Empty;
         creatorAttribute = Attribute.Fire;
         int halfSlider = abilitySliderScope / 2;

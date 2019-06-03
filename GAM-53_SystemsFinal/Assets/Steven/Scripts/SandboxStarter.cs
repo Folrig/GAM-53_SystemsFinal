@@ -36,6 +36,6 @@ public class SandboxStarter : MonoBehaviour
         battleCreature.moves.Add(move2);
         GameObject cbui = Instantiate(battleUIPrefab, canvas, false);
         CreatureBattle creatureBattle = cbui.GetComponent<CreatureBattle>();
-        creatureBattle.Initialize(battleCreature, null, null);
+        creatureBattle.Initialize(battleCreature);
 	}
 }

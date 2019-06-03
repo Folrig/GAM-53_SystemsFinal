@@ -15,6 +15,8 @@ public class CreatureBattle : MonoBehaviour
     [SerializeField] private MessageList messageList;
     [SerializeField] private CommandPanel commandPanel;
     [SerializeField] private CreaturePanels creaturePanels;
+    [SerializeField] private GameObject playerObject;
+    [SerializeField] private GameObject enemyObject;
 
     // These need to be set externally
     [SerializeField] private Transform playerAvatarPosition;
@@ -41,19 +43,19 @@ public class CreatureBattle : MonoBehaviour
         commandPanel.CommandClick -= PlayerCommandClicked;
     }
 
-    public void Initialize(BattleCreature playerCreature, Transform playerAvatarPosition, Transform enemyAvatarPosition)
+    public void Initialize(BattleCreature playerCreature)
     {
-        this.playerAvatarPosition = playerAvatarPosition;
-        this.enemyAvatarPosition = enemyAvatarPosition;
+        //this.playerAvatarPosition = playerAvatarPosition;
+        //this.enemyAvatarPosition = enemyAvatarPosition;
 
         this.playerCreature = playerCreature;
-        int lowLevelBound = playerCreature.Level - 2;
-        if (lowLevelBound < 1)
-        {
-            lowLevelBound = 1;
-        }
+        int lowLevelBound = playerCreature.Level - 2;        
         int highLevelBound = playerCreature.Level + 2;
         int enemyLevel = UnityEngine.Random.Range(lowLevelBound, highLevelBound + 1);
+        if (enemyLevel < 1)
+        {
+            enemyLevel = 1;
+        }
         enemyCreature = GenerateEnemy(enemyLevel);
 
         // I lack access to the avatars to instantiate them
