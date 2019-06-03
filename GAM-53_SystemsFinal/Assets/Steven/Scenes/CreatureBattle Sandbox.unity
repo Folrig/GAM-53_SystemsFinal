@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -260,6 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1877802590}
   - component: {fileID: 1877802589}
+  - component: {fileID: 1877802591}
   m_Layer: 0
   m_Name: Sandbox Starter
   m_TagString: Untagged
@@ -281,17 +282,7 @@ MonoBehaviour:
   canvas: {fileID: 2032822048}
   battleUIPrefab: {fileID: 1826743347951618, guid: 3ca508b74068f4b31aa5b3a0ffa0d1f7,
     type: 2}
-  creatureName: Mr. Fancypants
-  attribute: 0
-  hp: 100
-  power: 40
-  agility: 60
-  moveName1: bladebla
-  moveAttrib1: 0
-  usesPower1: 0
-  moveName2: boogedyboo
-  moveAttrib2: 1
-  usesPower2: 1
+  fileName: CreatureData
 --- !u!4 &1877802590
 Transform:
   m_ObjectHideFlags: 0
@@ -305,6 +296,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1877802591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1877802588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f87f14ebeb2e04288b740bec7980d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2032822044
 GameObject:
   m_ObjectHideFlags: 0

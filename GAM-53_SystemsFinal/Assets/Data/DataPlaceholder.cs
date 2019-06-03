@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JamesPlaceholder : MonoBehaviour {
+public class DataPlaceholder : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

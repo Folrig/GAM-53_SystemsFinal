@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreatureBattle : MonoBehaviour 
 {
@@ -10,26 +11,20 @@ public class CreatureBattle : MonoBehaviour
     private PlayerController playerController;
     private EnemyController enemyController;
 
-    // These should be set from the CBUI prefab
     [SerializeField] private GameObject CBUI;
     [SerializeField] private MessageList messageList;
     [SerializeField] private CommandPanel commandPanel;
     [SerializeField] private CreaturePanels creaturePanels;
-    [SerializeField] private GameObject playerObject;
-    [SerializeField] private GameObject enemyObject;
-
-    // These need to be set externally
-    [SerializeField] private Transform playerAvatarPosition;
-    [SerializeField] private Transform enemyAvatarPosition;
-
-    private GameObject playerAvatar;
-    private GameObject enemyAvatar;
-    private Animator playerAnimator;
-    private Animator enemyAnimator;
-
-    public bool playersTurn = false;
+    [SerializeField] private Image playerAvatar;
+    [SerializeField] private Image enemyAvatar;
+    [SerializeField] private Sprite[] avatarSprites;
+    
     [SerializeField] private float messageWaitTime = 3.0f;
 
+    public delegate void VoidToVoid();
+    public event VoidToVoid BattleFinished;
+
+    private bool playersTurn = false;
     private static readonly string[] genCreatureNames = { "Spot", "Fluffy", "Spike", "Fido", "Mittens", "Rex", "Princess", "Buddy", "Bear", "Duke" };
     private static readonly string[] genMoveNames = { "Crusher", "Whiplash", "Inferno", "Bladespin", "Deluge" };
 
@@ -45,9 +40,6 @@ public class CreatureBattle : MonoBehaviour
 
     public void Initialize(BattleCreature playerCreature)
     {
-        //this.playerAvatarPosition = playerAvatarPosition;
-        //this.enemyAvatarPosition = enemyAvatarPosition;
-
         this.playerCreature = playerCreature;
         int lowLevelBound = playerCreature.Level - 2;        
         int highLevelBound = playerCreature.Level + 2;
@@ -58,19 +50,8 @@ public class CreatureBattle : MonoBehaviour
         }
         enemyCreature = GenerateEnemy(enemyLevel);
 
-        // I lack access to the avatars to instantiate them
-        // playerAvatar = Instantiate(playerCreature.Avatar, playerAvatarPosition);
-        // enemyAvatar = Instantiate(enemyCreature.Avatar, enemyAvatarPosition);
-        // playerAnimator = playerAvatar.GetComponent<Animator>();
-        // if (playerAnimator == null)
-        // {
-        //     Debug.LogWarning("[F" + Time.frameCount + "] Player avatar does not have an Animator.");
-        // }
-        // enemyAnimator = enemyAvatar.GetComponent<Animator>();
-        // if (enemyAnimator == null)
-        // {
-        //     Debug.LogWarning("[F" + Time.frameCount + "] Enemy avatar does not have an Animator.");
-        // }
+        playerAvatar.sprite = playerCreature.Avatar;
+        enemyAvatar.sprite = enemyCreature.Avatar;
 
         playerController = new PlayerController(playerCreature, this, commandPanel);
         enemyController = new EnemyController(enemyCreature, this);
@@ -176,11 +157,17 @@ public class CreatureBattle : MonoBehaviour
                 yield return StartCoroutine(MessageWithDelay(playerCreature.Name + " gained a level!"));
             }
         }
+
+        if (BattleFinished != null)
+        {
+            BattleFinished();
+        }
         Destroy(CBUI);
     }
 
     private BattleCreature GenerateEnemy(int desiredLevel)
     {
+        Sprite randomSprite = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length)];
         string name = genCreatureNames[UnityEngine.Random.Range(0, genCreatureNames.Length)];
         Attribute attrib = RandomAttribute();
         int health = UnityEngine.Random.Range(80, 121);
@@ -188,6 +175,8 @@ public class CreatureBattle : MonoBehaviour
         int agility = 100 - power;
 
         BattleCreature newCreature = new BattleCreature(name, attrib, health, health, power, agility);
+
+        newCreature.Avatar = randomSprite;
 
         int level = 1;
         while (level < desiredLevel)

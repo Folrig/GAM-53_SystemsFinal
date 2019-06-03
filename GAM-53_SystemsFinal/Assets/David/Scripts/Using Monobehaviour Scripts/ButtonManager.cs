@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class ButtonManager : MonoBehaviour
     #endregion Adjustable Fields
 
     #region Inspector Plugins
-    [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject firstCreateScreen;
     [SerializeField] private GameObject secondCreateScreen;
 
@@ -30,6 +30,11 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private GameObject moveListItemPrefab;
     #endregion Inspector Plugins
 
+    #region Events
+    public delegate void BattleCreatureToVoid(BattleCreature battleCreature);
+    public event BattleCreatureToVoid CreationFinished;
+    #endregion Events
+
     #region Members
     private PokeMawnDexMainScript pokeMainScript;
     private Sprite creatorAvatar;
@@ -41,16 +46,23 @@ public class ButtonManager : MonoBehaviour
     #endregion Members
 
     #region Event Handlers
-    public void CreateClicked()
+    //public void CreateClicked()
+    //{
+    //    SwapMenus(mainMenu, firstCreateScreen);
+    //    InitTempBattleCreature();
+    //    InitFirstCreateScreen();
+    //}
+
+    //public void CreateCancelClicked()
+    //{
+    //   SwapMenus(firstCreateScreen, mainMenu);
+    //}
+
+    public void StartCreator()
     {
-        SwapMenus(mainMenu, firstCreateScreen);
+        firstCreateScreen.SetActive(true);
         InitTempBattleCreature();
         InitFirstCreateScreen();
-    }
-
-    public void CreateCancelClicked()
-    {
-        SwapMenus(firstCreateScreen, mainMenu);
     }
 
     public void CreateNextClicked()
@@ -67,8 +79,10 @@ public class ButtonManager : MonoBehaviour
         {
             newCreature.moves.Add(move);
         }
-        //pokeMainScript.creatures.Add(newCreature);
-        SwapMenus(secondCreateScreen, mainMenu);
+        if (CreationFinished != null)
+        {
+            CreationFinished(newCreature);
+        }
     }
 
     public void NameFieldChanged()
@@ -215,4 +229,9 @@ public class ButtonManager : MonoBehaviour
         newMenu.SetActive(true);
     }
     #endregion Helper Functions
+
+    public void ShowListOfCreatures()
+    {
+        SceneManager.LoadScene("Creature Index");
+    }
 }
